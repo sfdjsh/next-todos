@@ -1,0 +1,52 @@
+import { deleteTodo, fetchSingleTodo, updateTodo } from "@/data/fireStore";
+
+// 단일 할 일 조회
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  const data = await fetchSingleTodo(id);
+
+  if (!data) {
+    return new Response("id로 조회한 할 일이 없습니다.");
+  }
+
+  const response = {
+    message: "단일 할일 조회",
+    data,
+  };
+  return Response.json(response);
+}
+
+// 할 일 삭제
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id;
+  if (!id) return;
+  const deletedTodo = await deleteTodo(id);
+  if (deletedTodo) {
+    return new Response("할일 삭제 성공");
+  } else {
+    return new Response("할일 삭제 실패");
+  }
+}
+
+// 할 일 수정
+export async function PUT(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const id = params.id
+  const { title, content, is_done } = await request.json();
+  const updateData = await updateTodo({id, title, content, is_done})
+
+  const response = {
+    message: "할 일 수정 성공",
+    data: updateData
+  };
+
+  return Response.json(response);
+}
