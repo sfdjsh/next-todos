@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Container } from "@mui/material";
 import TodoList from "@/components/TodoList";
+import CreateButton from "@/components/CreateButton";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <AppRouterCacheProvider>
           <Container fixed>
             {children}
+            <CreateButton />
             <TodoList />
           </Container>
         </AppRouterCacheProvider>
