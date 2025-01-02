@@ -14,3 +14,9 @@ export type ModalType = {
   open: boolean;
   handleClose(): void;
 }
+
+export type UpdateModalType = {
+  open: boolean;
+  handleClose(): void;
+  id: string
+}

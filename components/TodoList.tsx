@@ -8,19 +8,13 @@ import {
   Paper,
   Button,
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import { todoDataType } from "@/models/types";
-
-const fetchTodo = async () => {
-  const response = await fetch("http://localhost:3000/api/todos");
-  const result = await response.json();
-  return result;
-};
+import { TodoDataType } from "@/models/types";
+import { fetchTodoApi } from "@/lid/todoApi";
+import DeleteButton from "./DeleteButton";
+import UpdateButton from "./UpdateButton";
 
 const TodoList = async () => {
-  const result = await fetchTodo();
+  const result = await fetchTodoApi();
 
   return (
     <>
@@ -48,7 +42,7 @@ const TodoList = async () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {result.data.map((data: todoDataType) => (
+            {result.data.map((data: TodoDataType) => (
               <TableRow key={data.id}>
                 <TableCell
                   component="th"
@@ -66,14 +60,10 @@ const TodoList = async () => {
                   </Button>
                 </TableCell>
                 <TableCell align="right">
-                  <Button>
-                    <EditIcon />
-                  </Button>
+                  <UpdateButton id={data.id} />
                 </TableCell>
                 <TableCell>
-                  <Button color="error">
-                    <DeleteIcon />
-                  </Button>
+                  <DeleteButton id={data.id} />
                 </TableCell>
               </TableRow>
             ))}

@@ -1,10 +1,17 @@
 "use client";
-import { Box, Modal, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Modal,
+  TextField,
+  Button,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 import { Textarea } from "@mui/joy";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTodoApi } from "@/lid/todoApi";
-import { ModalType, HandleTodoType } from "@/models/types";
+import { createTodoApi, detailTodoApi } from "@/lid/todoApi";
+import { ModalType, UpdateModalType } from "@/models/types";
 
 const style = {
   position: "absolute",
@@ -18,16 +25,23 @@ const style = {
   p: 4,
 };
 
-const TodoModal = ({ open, handleClose }: ModalType) => {
+const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [isDone, setIsDone] = useState(false);
 
-  const handleTodo = async ({ title, content }: HandleTodoType) => {
-    await createTodoApi({ title, content });
-    handleClose();
-    router.refresh();
-  };
+  useEffect(() => {
+    if (open && id) {
+      const fetchData = async () => {
+        const result = await detailTodoApi(id);
+        setTitle(result.data.title);
+        setContent(result.data.content);
+        setIsDone(result.data.is_done);
+      };
+      fetchData();
+    }
+  }, []);
 
   return (
     <>
@@ -39,6 +53,7 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
       >
         <Box sx={style}>
           <TextField
+            autoFocus
             id={title}
             label="제목"
             required
@@ -47,6 +62,7 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setTitle(e.target.value)
             }
+            value={title}
           />
           <Textarea
             id={content}
@@ -55,14 +71,26 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setContent(e.target.value)
             }
+            value={content || "작성한 내용이 없습니다."}
+            sx={{ mb: 2 }}
           />
+          <Box display="flex" justifyContent="space-between">
+            <Typography>완료 여부</Typography>
+            <Grid container spacing={1}>
+              <Grid>
+                <Button variant={isDone ? "contained" : "text"}>완료</Button>
+              </Grid>
+              <Grid>
+                <Button variant={isDone ? "text" : "contained"}>미완료</Button>
+              </Grid>
+            </Grid>
+          </Box>
           <Box display="flex" justifyContent="center" sx={{ mt: 2 }}>
             <Button
               variant="contained"
               sx={{ mx: 1 }}
-              onClick={() => handleTodo({ title, content })}
             >
-              추가
+              수정
             </Button>
             <Button variant="contained" color="error" onClick={handleClose}>
               취소
@@ -74,4 +102,4 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
   );
 };
 
-export default TodoModal;
+export default UpdateModal;
