@@ -12,6 +12,7 @@ import { TodoDataType } from "@/models/types";
 import { fetchTodoApi } from "@/lid/todoApi";
 import DeleteButton from "./DeleteButton";
 import UpdateButton from "./UpdateButton";
+import IsDoneButton from "./IsDoneButton";
 
 const TodoList = async () => {
   const result = await fetchTodoApi();
@@ -52,12 +53,7 @@ const TodoList = async () => {
                   {data.title}
                 </TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    color={data.is_done ? "success" : "warning"}
-                  >
-                    {data.is_done ? "완료" : "미완료"}
-                  </Button>
+                  <IsDoneButton id={data.id} isDone={data.is_done}/>
                 </TableCell>
                 <TableCell align="right">
                   <UpdateButton id={data.id} />

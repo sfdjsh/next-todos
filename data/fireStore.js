@@ -1,5 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, doc, getDocs, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  updateDoc
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -11,7 +20,7 @@ const firebaseConfig = {
   measurementId: process.env.MESSAGING_SENDER_ID,
 };
 
-const app = initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // 전체 할 일 조회
@@ -83,6 +92,18 @@ export const updateTodo = async ({ id, title, content, is_done }) => {
     content,
     is_done,
   };
-  await setDoc(newTodoRef, todoData);
+  await updateDoc(newTodoRef, todoData);
+  return todoData;
+};
+
+export const updateIsDoneTodo = async ({ id, is_done }) => {
+  const updateTodoRef = doc(db, "next-todos", id);
+  const todoData = {
+    id: updateTodoRef.id,
+    is_done,
+  };
+  await updateDoc(updateTodoRef, {
+    is_done,
+  });
   return todoData;
 };
