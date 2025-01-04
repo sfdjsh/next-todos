@@ -53,7 +53,7 @@ const TodoList = async () => {
                   {data.title}
                 </TableCell>
                 <TableCell>
-                  <IsDoneButton id={data.id} isDone={data.is_done}/>
+                  <IsDoneButton id={data.id} isDone={data.isDone}/>
                 </TableCell>
                 <TableCell align="right">
                   <UpdateButton id={data.id} />

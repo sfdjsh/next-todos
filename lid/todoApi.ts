@@ -1,5 +1,6 @@
 import { HandleTodoType } from "@/models/types";
 import { UpdateIsDoneType } from "@/components/IsDoneButton";
+import { TodoDataType } from "@/models/types";
 
 export const fetchTodoApi = async () => {
   const response = await fetch("http://localhost:3000/api/todos", {
@@ -39,8 +40,27 @@ export const updateIsDoneApi = async ({
     method: "PUT",
     body: JSON.stringify({
       id,
-      is_done: updateIsDone,
+      isDone: updateIsDone,
     }),
   });
+  return response.ok;
+};
+
+export const updateTodoApi = async ({
+  id,
+  title,
+  content,
+  isDone,
+}: TodoDataType) => {
+  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      id,
+      title,
+      content,
+      isDone,
+    }),
+  });
+  console.log(response)
   return response.ok;
 };

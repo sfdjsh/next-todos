@@ -1,17 +1,12 @@
 "use client";
-import {
-  Box,
-  Modal,
-  TextField,
-  Button,
-  Typography,
-} from "@mui/material";
+import { Box, Modal, TextField, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Textarea } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createTodoApi, detailTodoApi } from "@/lid/todoApi";
+import { createTodoApi, detailTodoApi, updateTodoApi } from "@/lid/todoApi";
 import { ModalType, UpdateModalType } from "@/models/types";
+import { TodoDataType } from "@/models/types";
 
 const style = {
   position: "absolute",
@@ -37,11 +32,25 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
         const result = await detailTodoApi(id);
         setTitle(result.data.title);
         setContent(result.data.content);
-        setIsDone(result.data.is_done);
+        setIsDone(result.data.isDone);
       };
       fetchData();
     }
   }, []);
+
+  const updateData = async ({ id, title, content, isDone }: TodoDataType) => {
+    const result = await updateTodoApi({
+      id,
+      title,
+      content,
+      isDone,
+    });
+
+    if (result) {
+      handleClose();
+      router.refresh();
+    }
+  };
 
   return (
     <>
@@ -78,10 +87,20 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
             <Typography>완료 여부</Typography>
             <Grid container spacing={1}>
               <Grid>
-                <Button variant={isDone ? "contained" : "text"}>완료</Button>
+                <Button
+                  variant={isDone ? "contained" : "text"}
+                  onClick={() => setIsDone(true)}
+                >
+                  완료
+                </Button>
               </Grid>
               <Grid>
-                <Button variant={isDone ? "text" : "contained"}>미완료</Button>
+                <Button
+                  variant={isDone ? "text" : "contained"}
+                  onClick={() => setIsDone(false)}
+                >
+                  미완료
+                </Button>
               </Grid>
             </Grid>
           </Box>
@@ -89,6 +108,7 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
             <Button
               variant="contained"
               sx={{ mx: 1 }}
+              onClick={() => updateData({ id, title, content, isDone })}
             >
               수정
             </Button>

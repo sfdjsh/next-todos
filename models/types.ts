@@ -2,7 +2,7 @@ export type TodoDataType = {
   id: string;
   title: string;
   content?: string;
-  is_done: boolean;
+  isDone: boolean;
 };
 
 export type HandleTodoType = {

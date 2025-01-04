@@ -1,11 +1,16 @@
-import { deleteTodo, fetchSingleTodo, updateTodo, updateIsDoneTodo } from "@/data/fireStore";
+import {
+  deleteTodo,
+  fetchSingleTodo,
+  updateTodo,
+  updateIsDoneTodo,
+} from "@/data/fireStore";
 
 // 단일 할 일 조회
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const id = params.id;
+  const { id } = await params;
   const data = await fetchSingleTodo(id);
 
   if (!data) {
@@ -39,11 +44,10 @@ export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const {id} = await params
-  const { title, content, is_done } = await request.json();
+  const { id } = await params;
+  const { title, content, isDone } = await request.json();
   if (title && content) {
-    const updateData = await updateTodo({ id, title, content, is_done });
-
+    const updateData = await updateTodo({ id, title, content, isDone });
     const response = {
       message: "할 일 수정 성공",
       data: updateData,
@@ -51,7 +55,7 @@ export async function PUT(
 
     return Response.json(response);
   } else {
-    const updateData = await updateIsDoneTodo({ id, is_done });
+    const updateData = await updateIsDoneTodo({ id, isDone });
     const response = {
       message: "할 일 완료 여부 수정 성공",
       data: updateData,

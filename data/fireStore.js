@@ -32,7 +32,7 @@ export const fetchTodos = async () => {
       id: doc.data().id,
       title: doc.data().title,
       content: doc.data().content,
-      is_done: doc.data().is_done,
+      isDone: doc.data().is_done,
       // created_at : doc.data().created_at?.toDate().toLocaleDateString()
     };
 
@@ -51,7 +51,7 @@ export const fetchSingleTodo = async (id) => {
       id: todoDocSnap.data().id,
       title: todoDocSnap.data().title,
       content: todoDocSnap.data().content,
-      is_done: todoDocSnap.data().is_done,
+      isDone: todoDocSnap.data().is_done,
     };
 
     return todoData;
@@ -84,26 +84,27 @@ export const deleteTodo = async (id) => {
 };
 
 // 할 일 수정
-export const updateTodo = async ({ id, title, content, is_done }) => {
+export const updateTodo = async ({ id, title, content, isDone }) => {
   const newTodoRef = doc(db, "next-todos", id);
   const todoData = {
     id: newTodoRef.id,
     title,
     content,
-    is_done,
+    is_done: isDone,
   };
   await updateDoc(newTodoRef, todoData);
   return todoData;
 };
 
-export const updateIsDoneTodo = async ({ id, is_done }) => {
+// 완료 여부 수정
+export const updateIsDoneTodo = async ({ id, isDone }) => {
   const updateTodoRef = doc(db, "next-todos", id);
   const todoData = {
     id: updateTodoRef.id,
-    is_done,
+    isDone,
   };
   await updateDoc(updateTodoRef, {
-    is_done,
+    is_done: isDone,
   });
   return todoData;
 };
