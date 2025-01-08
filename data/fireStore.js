@@ -7,7 +7,9 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
-  updateDoc
+  updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -107,4 +109,29 @@ export const updateIsDoneTodo = async ({ id, isDone }) => {
     is_done: isDone,
   });
   return todoData;
+};
+
+// 검색을 통한 할 일 조회
+export const searchTodo = async ({field, input}) => {
+  const todoList = [];
+
+  const todoRef = collection(db, "next-todos");
+  const q = query(
+    todoRef,
+    where(field, ">=", input),
+    where(field, "<=", input + "\uf8ff")
+  );
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const todoData = {
+      id: doc.data().id,
+      title: doc.data().title,
+      content: doc.data().content,
+      isDone: doc.data().is_done,
+    };
+
+    todoList.push(todoData);
+  });
+
+  return todoList;
 };

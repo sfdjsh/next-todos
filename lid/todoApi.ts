@@ -61,6 +61,5 @@ export const updateTodoApi = async ({
       isDone,
     }),
   });
-  console.log(response)
   return response.ok;
 };

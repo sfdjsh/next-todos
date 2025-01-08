@@ -3,6 +3,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Container } from "@mui/material";
 import TodoList from "@/components/TodoList";
 import CreateButton from "@/components/CreateButton";
+import SearchInput from "@/components/SearchInput";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,7 @@ export default function RootLayout({
           <Container fixed>
             {children}
             <CreateButton />
+            <SearchInput />
             <TodoList />
           </Container>
         </AppRouterCacheProvider>
