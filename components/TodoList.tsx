@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -8,17 +9,28 @@ import {
   Paper,
   Button,
 } from "@mui/material";
+import { useState, useEffect } from "react";
 import { TodoDataType } from "@/models/types";
 import { fetchTodoApi } from "@/lid/todoApi";
 import DeleteButton from "./DeleteButton";
 import UpdateButton from "./UpdateButton";
 import IsDoneButton from "./IsDoneButton";
+import SearchInput from "./SearchInput";
 
-const TodoList = async () => {
-  const result = await fetchTodoApi();
+const TodoList = () => {
+  const [todos, setTodos] = useState<TodoDataType[]>([]);
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const response = await fetchTodoApi();
+      const result = response.data;
+      setTodos(result);
+    };
+    fetchTodos();
+  }, []);
 
   return (
     <>
+      <SearchInput setTodos={setTodos}/>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="customized table">
           <TableHead>
@@ -43,7 +55,7 @@ const TodoList = async () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {result.data.map((data: TodoDataType) => (
+            {todos.map((data: TodoDataType) => (
               <TableRow key={data.id}>
                 <TableCell
                   component="th"
@@ -53,7 +65,7 @@ const TodoList = async () => {
                   {data.title}
                 </TableCell>
                 <TableCell>
-                  <IsDoneButton id={data.id} isDone={data.isDone}/>
+                  <IsDoneButton id={data.id} isDone={data.isDone} />
                 </TableCell>
                 <TableCell align="right">
                   <UpdateButton id={data.id} />

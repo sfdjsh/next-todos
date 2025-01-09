@@ -20,3 +20,8 @@ export type UpdateModalType = {
   handleClose(): void;
   id: string
 }
+
+export type SearchType = {
+  field: string,
+  searchInput: string
+}

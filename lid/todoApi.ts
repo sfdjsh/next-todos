@@ -63,3 +63,9 @@ export const updateTodoApi = async ({
   });
   return response.ok;
 };
+
+export const fetchSearchTodoApi = async ({field, searchInput}: any) => {
+  const response = await fetch(`http://localhost:3000/api/search?field=${field}&input=${searchInput}`);
+  console.log(field, searchInput)
+  return response.json();
+}

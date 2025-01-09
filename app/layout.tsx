@@ -22,7 +22,6 @@ export default function RootLayout({
           <Container fixed>
             {children}
             <CreateButton />
-            <SearchInput />
             <TodoList />
           </Container>
         </AppRouterCacheProvider>
