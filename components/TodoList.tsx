@@ -28,9 +28,11 @@ const TodoList = () => {
     fetchTodos();
   }, []);
 
+  console.log(todos);
+
   return (
     <>
-      <SearchInput setTodos={setTodos}/>
+      <SearchInput setTodos={setTodos} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="customized table">
           <TableHead>
@@ -46,11 +48,14 @@ const TodoList = () => {
                 완료 여부
               </TableCell>
               <TableCell
-                colSpan={2}
-                align="center"
                 sx={{ backgroundColor: "#D4F4FA", fontWeight: "bold" }}
               >
-                수정 및 삭제
+                기간
+              </TableCell>
+              <TableCell
+                sx={{ backgroundColor: "#D4F4FA", fontWeight: "bold" }}
+              >
+                상세보기
               </TableCell>
             </TableRow>
           </TableHead>
@@ -67,11 +72,9 @@ const TodoList = () => {
                 <TableCell>
                   <IsDoneButton id={data.id} isDone={data.isDone} />
                 </TableCell>
-                <TableCell align="right">
-                  <UpdateButton id={data.id} />
-                </TableCell>
+                <TableCell>{`${data.startAt} ~ ${data.endAt}`}</TableCell>
                 <TableCell>
-                  <DeleteButton id={data.id} />
+                  <UpdateButton id={data.id} />
                 </TableCell>
               </TableRow>
             ))}

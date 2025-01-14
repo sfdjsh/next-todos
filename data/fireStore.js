@@ -11,6 +11,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import dayjs from "dayjs";
 
 const firebaseConfig = {
   apiKey: process.env.API_KEY,
@@ -35,7 +36,12 @@ export const fetchTodos = async () => {
       title: doc.data().title,
       content: doc.data().content,
       isDone: doc.data().is_done,
-      // created_at : doc.data().created_at?.toDate().toLocaleDateString()
+      startAt : dayjs(doc.data().start_at).format("YYYY-MM-DD"),
+      endAt : dayjs(doc.data().end_at).format("YYYY-MM-DD")
+      // startAt : doc.data().start_at?.toString("YYYY-MM-DD"),
+      // startAt : doc.data().start_at?.toDate().toLocaleDateString,
+      // endAt : dayjs(doc.data().start_at).format("YYYY-MM-DD")
+      // startAt : dayjs(doc.data().start_at).format("YYYY-MM-DD")
     };
 
     todoList.push(todoData);
@@ -54,6 +60,8 @@ export const fetchSingleTodo = async (id) => {
       title: todoDocSnap.data().title,
       content: todoDocSnap.data().content,
       isDone: todoDocSnap.data().is_done,
+      // startAt : todoDocSnap.data().start_at.toString(),
+      // endAt : todoDocSnap.data().end_at.toString(),
     };
 
     return todoData;
@@ -63,14 +71,18 @@ export const fetchSingleTodo = async (id) => {
 };
 
 // 할 일 추가
-export const createTodos = async ({ title, content }) => {
+export const createTodos = async ({ title, content, startValue, endValue }) => {
+  console.log(startValue, endValue)
   const newTodoRef = doc(collection(db, "next-todos"));
   const todoData = {
     id: newTodoRef.id,
     title,
     content,
     is_done: false,
+    start_at : startValue,
+    end_at : endValue
   };
+
   await setDoc(newTodoRef, todoData);
   return todoData;
 };

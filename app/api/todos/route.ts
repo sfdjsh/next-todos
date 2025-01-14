@@ -13,8 +13,8 @@ export async function GET(request: Request) {
 
 // 할 일 추가
 export async function POST(request: Request) {
-  const { title, content } = await request.json();
-  const addTodo = await createTodos({title, content})
+  const { title, content, startValue, endValue } = await request.json();
+  const addTodo = await createTodos({title, content, startValue, endValue})
   const response = {
     message: "할일 생성",
     addTodo,

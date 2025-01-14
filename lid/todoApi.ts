@@ -14,12 +14,14 @@ export const detailTodoApi = async (id: string) => {
   return response.json();
 };
 
-export const createTodoApi = async ({ title, content }: HandleTodoType) => {
+export const createTodoApi = async ({ title, content, startValue, endValue }: any) => {
   await fetch("http://localhost:3000/api/todos", {
     method: "POST",
     body: JSON.stringify({
       title,
       content,
+      startValue,
+      endValue
     }),
     cache: "no-store",
   });
