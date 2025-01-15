@@ -18,33 +18,24 @@ import SearchIcon from "@mui/icons-material/Search";
 import Grid from "@mui/material/Grid2";
 import { fetchSearchTodoApi, fetchTodoApi } from "@/lid/todoApi";
 import { useRouter } from "next/navigation";
-import { TodoDataType,SearchType } from "@/models/types";
+import { TodoDataType, SearchType } from "@/models/types";
 
 type SetTodo = {
   setTodos: React.Dispatch<React.SetStateAction<TodoDataType[]>>;
-}
+};
 
-const SearchInput = ({ setTodos }: SetTodo) => {
+const SearchInput = () => {
   const router = useRouter();
 
   const [field, setField] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [searchButtonFlag, setSearchButtonFlag] = useState(false);
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     setField(event.target.value);
   };
 
-  const handleSearchTodo = async ({ field, searchInput }: SearchType) => {
-    const response = await fetchSearchTodoApi({ field, searchInput });
-    const result = response.data;
-    setTodos(result);
-  };
-
-  const initFetchTodos = async () => {
-    const response = await fetchTodoApi();
-    const result = response.data;
-    setTodos(result);
+  const searchPush = () => {
+    router.push(`/todos/search?field=${field}&input=${searchInput}`);
   };
 
   return (
@@ -61,7 +52,6 @@ const SearchInput = ({ setTodos }: SetTodo) => {
               onChange={(e) => handleChange(e)}
             >
               <MenuItem value="title">제목</MenuItem>
-              <MenuItem value="test">기간</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -75,13 +65,8 @@ const SearchInput = ({ setTodos }: SetTodo) => {
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => {
-                        if (field && searchInput) {
-                          handleSearchTodo({ field, searchInput });
-                          setSearchButtonFlag(true);
-                        } else {
-                          alert("검색 종류와 검색어를 정확히 입력해주세요.");
-                          setSearchButtonFlag(false);
-                        }
+                        if (field && searchInput) searchPush();
+                        else alert("검색 종류와 검색어를 정확히 입력해주세요.");
                       }}
                     >
                       <SearchIcon />
@@ -97,33 +82,6 @@ const SearchInput = ({ setTodos }: SetTodo) => {
           </Box>
         </Grid>
       </Grid>
-      {searchButtonFlag && field && searchInput && (
-        <Paper>
-          <Box
-            display="flex"
-            alignItems="center"
-            sx={{
-              py: 2,
-              mb: 1,
-            }}
-          >
-            <Button
-              onClick={() => {
-                setSearchButtonFlag(false);
-                setSearchInput("");
-                setField("");
-                initFetchTodos();
-              }}
-            >
-              X
-            </Button>
-            <Typography component="span" variant="h6" color="blue">
-              {searchInput}
-            </Typography>
-            <Typography variant="h6">에 대한 검색 결과</Typography>
-          </Box>
-        </Paper>
-      )}
     </>
   );
 };

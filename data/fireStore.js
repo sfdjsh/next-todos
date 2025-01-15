@@ -36,12 +36,8 @@ export const fetchTodos = async () => {
       title: doc.data().title,
       content: doc.data().content,
       isDone: doc.data().is_done,
-      startAt : dayjs(doc.data().start_at).format("YYYY-MM-DD"),
-      endAt : dayjs(doc.data().end_at).format("YYYY-MM-DD")
-      // startAt : doc.data().start_at?.toString("YYYY-MM-DD"),
-      // startAt : doc.data().start_at?.toDate().toLocaleDateString,
-      // endAt : dayjs(doc.data().start_at).format("YYYY-MM-DD")
-      // startAt : dayjs(doc.data().start_at).format("YYYY-MM-DD")
+      startAt: dayjs(doc.data().start_at).format("YYYY-MM-DD"),
+      endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
     };
 
     todoList.push(todoData);
@@ -60,8 +56,8 @@ export const fetchSingleTodo = async (id) => {
       title: todoDocSnap.data().title,
       content: todoDocSnap.data().content,
       isDone: todoDocSnap.data().is_done,
-      // startAt : todoDocSnap.data().start_at.toString(),
-      // endAt : todoDocSnap.data().end_at.toString(),
+      startAt: dayjs(todoDocSnap.data().start_at).format("YYYY-MM-DD"),
+      endAt: dayjs(todoDocSnap.data().end_at).format("YYYY-MM-DD"),
     };
 
     return todoData;
@@ -71,18 +67,16 @@ export const fetchSingleTodo = async (id) => {
 };
 
 // 할 일 추가
-export const createTodos = async ({ title, content, startValue, endValue }) => {
-  console.log(startValue, endValue)
+export const createTodos = async ({ title, content, startAt, endAt }) => {
   const newTodoRef = doc(collection(db, "next-todos"));
   const todoData = {
     id: newTodoRef.id,
     title,
     content,
     is_done: false,
-    start_at : startValue,
-    end_at : endValue
+    start_at: startAt,
+    end_at: endAt,
   };
-
   await setDoc(newTodoRef, todoData);
   return todoData;
 };
@@ -98,13 +92,22 @@ export const deleteTodo = async (id) => {
 };
 
 // 할 일 수정
-export const updateTodo = async ({ id, title, content, isDone }) => {
+export const updateTodo = async ({
+  id,
+  title,
+  content,
+  isDone,
+  startAt,
+  endAt,
+}) => {
   const newTodoRef = doc(db, "next-todos", id);
   const todoData = {
     id: newTodoRef.id,
     title,
     content,
     is_done: isDone,
+    start_at: dayjs(startAt).format("YYYY-MM-DD"),
+    end_at: dayjs(endAt).format("YYYY-MM-DD"),
   };
   await updateDoc(newTodoRef, todoData);
   return todoData;
@@ -124,7 +127,7 @@ export const updateIsDoneTodo = async ({ id, isDone }) => {
 };
 
 // 검색을 통한 할 일 조회
-export const searchTodo = async ({field, input}) => {
+export const searchTodo = async ({ field, input }) => {
   const todoList = [];
 
   const todoRef = collection(db, "next-todos");
@@ -140,6 +143,8 @@ export const searchTodo = async ({field, input}) => {
       title: doc.data().title,
       content: doc.data().content,
       isDone: doc.data().is_done,
+      startAt: dayjs(doc.data().start_at).format("YYYY-MM-DD"),
+      endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
     };
 
     todoList.push(todoData);

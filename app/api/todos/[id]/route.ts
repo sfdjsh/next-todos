@@ -29,7 +29,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const id = params.id;
+  const { id } = await params;
   if (!id) return;
   const deletedTodo = await deleteTodo(id);
   if (deletedTodo) {
@@ -45,9 +45,16 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
-  const { title, content, isDone } = await request.json();
+  const { title, content, isDone, startAt, endAt } = await request.json();
   if (title && content) {
-    const updateData = await updateTodo({ id, title, content, isDone });
+    const updateData = await updateTodo({
+      id,
+      title,
+      content,
+      isDone,
+      startAt,
+      endAt,
+    });
     const response = {
       message: "할 일 수정 성공",
       data: updateData,

@@ -4,18 +4,30 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteTodoApi } from "@/lid/todoApi";
 import { useRouter } from "next/navigation";
 
-const DeleteButton = ({ id }: { id: string }) => {
+const DeleteButton = ({ id, handleClose }: any) => {
   const router = useRouter();
   const deleteTodo = async (id: string) => {
     const result = await deleteTodoApi(id);
     if (result) {
+      alert("정상적으로 삭제되었습니다.");
+      handleClose();
       router.refresh();
     }
   };
 
   return (
-    <Button color="error" onClick={() => deleteTodo(id)}>
+    <Button
+      variant="contained"
+      sx={{ mr: 1 }}
+      color="error"
+      onClick={() => {
+        if (confirm("정말 삭제하시겠습니까?")) {
+          deleteTodo(id);
+        }
+      }}
+    >
       <DeleteIcon />
+      삭제
     </Button>
   );
 };

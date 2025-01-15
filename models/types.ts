@@ -5,8 +5,8 @@ export type TodoDataType = {
   title: string;
   content?: string;
   isDone: boolean;
-  startAt: Dayjs;
-  endAt: Dayjs;
+  startAt?: Dayjs | null;
+  endAt?: Dayjs | null;
 };
 
 export type HandleTodoType = {

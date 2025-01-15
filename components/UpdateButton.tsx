@@ -4,7 +4,7 @@ import { Button } from "@mui/material";
 import UpdateModal from "./UpdateModal";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const UpdateButton = ({ id }: { id: string }) => {
+const UpdateButton = ({ id }: { id: any }) => {
   const [open, setOpen] = useState(false);
   const [modalId, setModalId] = useState<string | null>(null);
 

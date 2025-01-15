@@ -5,8 +5,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTodoApi } from "@/lid/todoApi";
 import { ModalType, HandleTodoType } from "@/models/types";
-import MyDatePicker from "./MyDatePicker";
+// import MyDatePicker from "./MyDatePicker";
 import dayjs, { Dayjs } from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 const style = {
   position: "absolute",
@@ -15,24 +18,39 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 500,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid #000",
   boxShadow: 24,
   p: 4,
 };
 
-const TodoModal = ({ open, handleClose }: ModalType) => {
+type UpsertTodoType = {
+  title: string;
+  content: string;
+  startAt: Dayjs | null;
+  endAt: Dayjs | null;
+};
+
+const CreateModal = ({ open, handleClose }: ModalType) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [startValue, setStartValue] = useState<Dayjs>(
-    dayjs("2025-01-17")
-  );
-  const [endValue, setEndValue] = useState<Dayjs>(dayjs("2025-01-17"));
+  const [startAt, setStartAt] = useState<Dayjs | null>(dayjs());
+  const [endAt, setEndAt] = useState<Dayjs | null>(dayjs());
 
-  const handleTodo = async ({ title, content, startValue, endValue }: any) => {
-    await createTodoApi({ title, content, startValue, endValue });
+  const handleTodo = async ({
+    title,
+    content,
+    startAt,
+    endAt,
+  }: UpsertTodoType) => {
+    const response = await createTodoApi({
+      title,
+      content,
+      startAt,
+      endAt,
+    });
+    await router.refresh();
     handleClose();
-    router.refresh();
   };
 
   return (
@@ -67,19 +85,32 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
             />
           </Box>
           <Box sx={{ mb: 2 }}>
-            <Typography sx={{ ml: 0.5, fontWeight: "bold" }}>기간</Typography>
-            <MyDatePicker
-              startValue={startValue}
-              endValue={endValue}
-              setStartValue={setStartValue}
-              setEndValue={setEndValue}
-            />
+            <Typography sx={{ ml: 0.5, mb: 2, fontWeight: "bold" }}>
+              기간
+            </Typography>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Box display="flex" alignItems="center">
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  label="시작일"
+                  value={startAt}
+                  onChange={(newValue: Dayjs | null) => setStartAt(newValue)}
+                />
+                <Typography sx={{ px: 1 }}> ~ </Typography>
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  label="종료일"
+                  value={endAt}
+                  onChange={(newValue: Dayjs | null) => setEndAt(newValue)}
+                />
+              </Box>
+            </LocalizationProvider>
           </Box>
           <Box display="flex" justifyContent="center" sx={{ mt: 3 }}>
             <Button
               variant="contained"
               sx={{ mx: 1 }}
-              onClick={() => handleTodo({ title, content, startValue, endValue })}
+              onClick={() => handleTodo({ title, content, startAt, endAt })}
             >
               등록
             </Button>
@@ -93,4 +124,4 @@ const TodoModal = ({ open, handleClose }: ModalType) => {
   );
 };
 
-export default TodoModal;
+export default CreateModal;

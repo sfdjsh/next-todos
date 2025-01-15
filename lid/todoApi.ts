@@ -10,24 +10,33 @@ export const fetchTodoApi = async () => {
 };
 
 export const detailTodoApi = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/todos/${id}`);
+  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+    cache: "no-store",
+  });
   return response.json();
 };
 
-export const createTodoApi = async ({ title, content, startValue, endValue }: any) => {
-  await fetch("http://localhost:3000/api/todos", {
+export const createTodoApi = async ({
+  title,
+  content,
+  startAt,
+  endAt,
+}: any) => {
+  const response = await fetch("http://localhost:3000/api/todos", {
     method: "POST",
     body: JSON.stringify({
       title,
       content,
-      startValue,
-      endValue
+      startAt,
+      endAt,
     }),
     cache: "no-store",
   });
+  return response.json();
 };
 
 export const deleteTodoApi = async (id: string) => {
+  console.log(id);
   const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
     method: "DELETE",
   });
@@ -44,7 +53,11 @@ export const updateIsDoneApi = async ({
       id,
       isDone: updateIsDone,
     }),
+    // cache: "no-store",
   });
+
+  console.log(response);
+
   return response.ok;
 };
 
@@ -53,6 +66,8 @@ export const updateTodoApi = async ({
   title,
   content,
   isDone,
+  startAt,
+  endAt,
 }: TodoDataType) => {
   const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
     method: "PUT",
@@ -61,13 +76,19 @@ export const updateTodoApi = async ({
       title,
       content,
       isDone,
+      startAt,
+      endAt,
     }),
   });
   return response.ok;
 };
 
-export const fetchSearchTodoApi = async ({field, searchInput}: any) => {
-  const response = await fetch(`http://localhost:3000/api/search?field=${field}&input=${searchInput}`);
-  console.log(field, searchInput)
+export const fetchSearchTodoApi = async ({ field, searchInput }: any) => {
+  const response = await fetch(
+    `http://localhost:3000/api/search?field=${field}&input=${searchInput}`,
+    {
+      cache: "no-store",
+    }
+  );
   return response.json();
-}
+};
