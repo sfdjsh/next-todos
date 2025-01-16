@@ -1,16 +1,23 @@
-import { Typography } from "@mui/material";
 import { fetchTodoApi } from "@/lid/todoApi";
-import SearchInput from "@/components/SearchInput";
 import TodoList from "@/components/TodoList";
-import CreateButton from "@/components/CreateButton";
+import PageNation from "@/components/PageNation";
 
-const TodoPage = async () => {
-  const response = await fetchTodoApi();
-  const todos = response.data
+const TodoPage = async ({
+  searchParams,
+}: {
+  searchParams: { page: number };
+}) => {
+  const { page } = await searchParams;
+  const response = await fetchTodoApi(page);
+  const todos = response.data;
 
   return (
     <>
       <TodoList todos={todos} />
+      <PageNation
+        totalPages={response.total_pages}
+        currentPage={response.current_pages}
+      />
     </>
   );
 };

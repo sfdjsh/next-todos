@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import CreateButton from "@/components/CreateButton";
 import SearchInput from "@/components/SearchInput";
+import PageNation from "@/components/PageNation";
 
 const TodosLayout = ({ children }: { children: React.ReactNode }) => {
   return (

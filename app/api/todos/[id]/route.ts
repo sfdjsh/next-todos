@@ -24,6 +24,13 @@ export async function GET(
   return Response.json(response);
 }
 
+// export async function GET(
+//   request: Request,
+//   { params }: { params: { page: number } }
+// ) {
+//   return ;
+// }
+
 // 할 일 삭제
 export async function DELETE(
   request: Request,

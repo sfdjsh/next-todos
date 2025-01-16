@@ -49,8 +49,6 @@ const TodoList = ({
                 <IsDoneButton
                   id={data.id}
                   isDone={data.isDone}
-                  // setTodos = {setTodos}
-                  // onUpdate={onUpdateTodo}
                 />
               </TableCell>
               <TableCell>{`${data.startAt} ~ ${data.endAt}`}</TableCell>

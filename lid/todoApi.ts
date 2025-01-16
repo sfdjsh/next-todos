@@ -2,11 +2,17 @@ import { HandleTodoType } from "@/models/types";
 import { UpdateIsDoneType } from "@/components/IsDoneButton";
 import { TodoDataType } from "@/models/types";
 
-export const fetchTodoApi = async () => {
-  const response = await fetch("http://localhost:3000/api/todos", {
-    cache: "no-store",
-  });
-  return response.json();
+export const fetchTodoApi = async (currentPage: number) => {
+  if (currentPage) {
+    const response = await fetch(
+      `http://localhost:3000/api/todos?page=${currentPage}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    return response.json();
+  }
 };
 
 export const detailTodoApi = async (id: string) => {
