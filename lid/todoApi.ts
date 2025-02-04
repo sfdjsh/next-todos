@@ -1,6 +1,7 @@
 import { HandleTodoType } from "@/models/types";
 import { UpdateIsDoneType } from "@/components/IsDoneButton";
 import { TodoDataType } from "@/models/types";
+import { Timestamp } from "firebase/firestore";
 
 export const fetchTodoApi = async (currentPage: number) => {
   if (currentPage) {
@@ -10,7 +11,6 @@ export const fetchTodoApi = async (currentPage: number) => {
         cache: "no-store",
       }
     );
-
     return response.json();
   }
 };
@@ -28,6 +28,8 @@ export const createTodoApi = async ({
   startAt,
   endAt,
 }: any) => {
+  console.log("todoApi.ts");
+  console.log("startAt", startAt instanceof Timestamp);
   const response = await fetch("http://localhost:3000/api/todos", {
     method: "POST",
     body: JSON.stringify({
@@ -38,6 +40,7 @@ export const createTodoApi = async ({
     }),
     cache: "no-store",
   });
+
   return response.json();
 };
 
@@ -96,5 +99,12 @@ export const fetchSearchTodoApi = async ({ field, searchInput }: any) => {
       cache: "no-store",
     }
   );
+  return response.json();
+};
+
+export const fetchPeriodTodoApi = async ({date}: any) => {
+  const response = await fetch(`http://localhost:3000/api/calendar?date=${date}`, {
+    cache: "no-store",
+  });
   return response.json();
 };

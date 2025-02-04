@@ -10,6 +10,7 @@ import {
   updateDoc,
   query,
   where,
+  Timestamp,
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -28,16 +29,16 @@ const db = getFirestore(app);
 
 // 전체 할 일 조회
 export const fetchTodos = async () => {
-  const todoList = [];
+  let todoList = [];
   const querySnapshot = await getDocs(collection(db, "next-todos"));
   querySnapshot.forEach((doc) => {
     const todoData = {
-      id: doc.data().id,
-      title: doc.data().title,
-      content: doc.data().content,
-      isDone: doc.data().is_done,
-      startAt: dayjs(doc.data().start_at).format("YYYY-MM-DD"),
-      endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
+      id: doc.data()?.id,
+      title: doc.data()?.title,
+      content: doc.data()?.content,
+      isDone: doc.data()?.is_done,
+      startAt: dayjs(doc.data().start_at.toDate()).format("YYYY-MM-DD"),
+      endAt: dayjs(doc.data().end_at.toDate()).format("YYYY-MM-DD"),
     };
 
     todoList.push(todoData);
@@ -56,8 +57,8 @@ export const fetchSingleTodo = async (id) => {
       title: todoDocSnap.data().title,
       content: todoDocSnap.data().content,
       isDone: todoDocSnap.data().is_done,
-      startAt: dayjs(todoDocSnap.data().start_at).format("YYYY-MM-DD"),
-      endAt: dayjs(todoDocSnap.data().end_at).format("YYYY-MM-DD"),
+      startAt: dayjs(todoDocSnap.data().start_at.toDate()).format("YYYY-MM-DD"),
+      endAt: dayjs(todoDocSnap.data().end_at.toDate()).format("YYYY-MM-DD"),
     };
 
     return todoData;
@@ -74,8 +75,8 @@ export const createTodos = async ({ title, content, startAt, endAt }) => {
     title,
     content,
     is_done: false,
-    start_at: startAt,
-    end_at: endAt,
+    start_at: Timestamp.fromDate(dayjs(startAt).startOf("day").toDate()), // 00:00:00으로 설정
+    end_at: Timestamp.fromDate(dayjs(endAt).endOf("day").toDate()),
   };
   await setDoc(newTodoRef, todoData);
   return todoData;
@@ -147,6 +148,37 @@ export const searchTodo = async ({ field, input }) => {
       endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
     };
 
+    todoList.push(todoData);
+  });
+
+  return todoList;
+};
+
+// 검색을 통한 할 일 조회
+export const includedPeriodTodo = async ({date}) => {
+  const todoList = [];
+  
+  console.log(date)
+
+  const period = Timestamp.fromDate(dayjs(date).startOf("day").toDate());
+
+  const todoRef = collection(db, "next-todos");
+  const q = query(
+    todoRef,
+    where("start_at", "<=", period),
+    where("end_at", ">=", period)
+  );
+
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const todoData = {
+      id: doc.data().id,
+      title: doc.data().title,
+      content: doc.data().content,
+      isDone: doc.data().is_done,
+      startAt: dayjs(doc.data().start_at.toDate()).format("YYYY-MM-DD"),
+      endAt: dayjs(doc.data().end_at.toDate()).format("YYYY-MM-DD"),
+    };
     todoList.push(todoData);
   });
 

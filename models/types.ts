@@ -9,6 +9,15 @@ export type TodoDataType = {
   endAt?: Dayjs | null;
 };
 
+export type TestDataType = {
+  id: string;
+  title: string;
+  content?: string;
+  isDone: boolean;
+  startAt?: string;
+  endAt?: string;
+};
+
 export type HandleTodoType = {
   title: string;
   content: string;

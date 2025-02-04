@@ -5,7 +5,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTodoApi } from "@/lid/todoApi";
 import { ModalType, HandleTodoType } from "@/models/types";
-// import MyDatePicker from "./MyDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -30,6 +29,7 @@ type UpsertTodoType = {
   endAt: Dayjs | null;
 };
 
+
 const CreateModal = ({ open, handleClose }: ModalType) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -49,6 +49,7 @@ const CreateModal = ({ open, handleClose }: ModalType) => {
       startAt,
       endAt,
     });
+    
     await router.refresh();
     handleClose();
   };
@@ -111,6 +112,7 @@ const CreateModal = ({ open, handleClose }: ModalType) => {
               variant="contained"
               sx={{ mx: 1 }}
               onClick={() => handleTodo({ title, content, startAt, endAt })}
+              // onClick={() => handleTodo()}
             >
               등록
             </Button>

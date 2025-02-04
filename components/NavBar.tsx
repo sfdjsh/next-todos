@@ -19,7 +19,7 @@ const Navbar = () => {
           <Box display="flex">
             <Button color="inherit">
               <Link
-                href="/todos"
+                href="/todos?page=1"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
                 테이블
