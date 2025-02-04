@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import dayjs, { Dayjs } from "dayjs";
 import { fetchPeriodTodoApi } from "@/lid/todoApi";
-import { TodoDataType } from "@/models/types";
 import { TestDataType } from "@/models/types";
 
 type ValuePiece = Date | null;
