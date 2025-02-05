@@ -6,6 +6,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Typography,
 } from "@mui/material";
 import { TodoDataType } from "@/models/types";
 import { fetchTodoApi } from "@/lid/todoApi";
@@ -15,8 +16,8 @@ import SearchInput from "./SearchInput";
 
 const TodoList = ({
   todos,
-  // onUpdateTodo,
-}: {
+}: // onUpdateTodo,
+{
   todos: TodoDataType[];
   // onUpdateTodo: (id: string, updateIsDone: boolean) => void;
 }) => {
@@ -31,7 +32,13 @@ const TodoList = ({
             <TableCell sx={{ backgroundColor: "#D4F4FA", fontWeight: "bold" }}>
               완료 여부
             </TableCell>
-            <TableCell sx={{ backgroundColor: "#D4F4FA", fontWeight: "bold" }}>
+            <TableCell
+              sx={{
+                backgroundColor: "#D4F4FA",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
               기간
             </TableCell>
             <TableCell sx={{ backgroundColor: "#D4F4FA", fontWeight: "bold" }}>
@@ -42,17 +49,71 @@ const TodoList = ({
         <TableBody>
           {todos.map((data) => (
             <TableRow key={data.id}>
-              <TableCell component="th" scope="row" sx={{ fontWeight: "bold" }}>
+              <TableCell
+                component="th"
+                scope="row"
+                sx={{
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "150px",
+                }}
+              >
                 {data.title}
               </TableCell>
               <TableCell>
-                <IsDoneButton
-                  id={data.id}
-                  isDone={data.isDone}
-                  type="table"
-                />
+                <IsDoneButton id={data.id} isDone={data.isDone} type="table" />
               </TableCell>
-              <TableCell>{`${data.startAt} ~ ${data.endAt}`}</TableCell>
+              <TableCell align="center">
+                <Typography
+                  sx={{
+                    display: {xs: "block", md: "inline"
+                    },
+                    textAlign: {
+                      xs: "center",
+                    },
+                    fontSize: {
+                      xs: "0.7rem",
+                      md:"1rem"
+                    }
+                  }}
+                >
+                  {`${data.startAt}`}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: {
+                      xs: "block",
+                      md: "inline"
+                    },
+                    textAlign: {
+                      xs: "center",
+                    },
+                    fontSize: {
+                      xs: "0.7rem",
+                      md:"1rem"
+                    }
+                  }}
+                >
+                  {" ~ "}
+                </Typography>
+                <Typography
+                  sx={{
+                    display: {
+                      xs: "block",
+                      md: "inline"
+                    },
+                    textAlign: {
+                      xs: "center",
+                    },
+                    fontSize: {
+                      xs: "0.7rem",
+                      md:"1rem"
+                    }
+                  }}
+                >{`${data.startAt}`}</Typography>
+              </TableCell>
               <TableCell>
                 <UpdateButton id={data.id} />
               </TableCell>

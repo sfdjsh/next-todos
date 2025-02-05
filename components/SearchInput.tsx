@@ -13,9 +13,9 @@ import {
   Button,
   Typography,
   Paper,
+  Grid
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Grid from "@mui/material/Grid2";
 import { fetchSearchTodoApi, fetchTodoApi } from "@/lid/todoApi";
 import { useRouter } from "next/navigation";
 import { TodoDataType, SearchType } from "@/models/types";
@@ -41,7 +41,7 @@ const SearchInput = () => {
   return (
     <>
       <Grid container spacing={1} sx={{ mb: 1 }}>
-        <Grid size={2}>
+        <Grid item xs={3} sm={2}>
           <FormControl fullWidth>
             <InputLabel>종류</InputLabel>
             <Select
@@ -55,7 +55,7 @@ const SearchInput = () => {
             </Select>
           </FormControl>
         </Grid>
-        <Grid size={10}>
+        <Grid item xs={9} sm={10}>
           <Box>
             <TextField
               autoFocus

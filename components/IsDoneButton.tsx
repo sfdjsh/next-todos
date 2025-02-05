@@ -29,14 +29,19 @@ const IsDoneButton = ({ id, isDone, type }: IsDoneType) => {
     <>
       <Button
         variant="contained"
-        size={type === "table" ? "medium" : "small"}
         color={updateIsDone ? "success" : "warning"}
         sx={
           type === "calendar"
             ? (theme) => ({
                 [theme.breakpoints.down("md")]: { mt: 1 },
               })
-            : {}
+            : (theme) => ({
+                [theme.breakpoints.down("md")]: {
+                  fontSize: "0.75rem",
+                  height: "32px",
+                  p: 1,
+                },
+              })
         }
         onClick={handleClick}
       >
