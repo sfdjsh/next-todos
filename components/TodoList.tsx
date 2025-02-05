@@ -49,6 +49,7 @@ const TodoList = ({
                 <IsDoneButton
                   id={data.id}
                   isDone={data.isDone}
+                  type="table"
                 />
               </TableCell>
               <TableCell>{`${data.startAt} ~ ${data.endAt}`}</TableCell>

@@ -32,10 +32,13 @@ type UpsertTodoType = {
 
 const CreateModal = ({ open, handleClose }: ModalType) => {
   const router = useRouter();
+  const today = dayjs(new Date())
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [startAt, setStartAt] = useState<Dayjs | null>(dayjs());
   const [endAt, setEndAt] = useState<Dayjs | null>(dayjs());
+  console.log(startAt, endAt)
 
   const handleTodo = async ({
     title,
@@ -43,15 +46,24 @@ const CreateModal = ({ open, handleClose }: ModalType) => {
     startAt,
     endAt,
   }: UpsertTodoType) => {
-    const response = await createTodoApi({
-      title,
-      content,
-      startAt,
-      endAt,
-    });
-    
-    await router.refresh();
-    handleClose();
+
+    if (startAt && endAt) {
+      if (startAt <= endAt) {
+        const response = await createTodoApi({
+          title,
+          content,
+          startAt,
+          endAt,
+        });
+        
+        setStartAt(dayjs(today))
+        setEndAt(dayjs(today))
+        await router.refresh();
+        handleClose();
+      } else {
+        alert('종료일은 시작일과 같거나 더 늦게 설정해야 합니다.')
+      }
+    }
   };
 
   return (
@@ -92,6 +104,7 @@ const CreateModal = ({ open, handleClose }: ModalType) => {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <Box display="flex" alignItems="center">
                 <DatePicker
+                  defaultValue={dayjs(new Date())}
                   format="YYYY-MM-DD"
                   label="시작일"
                   value={startAt}
@@ -99,6 +112,7 @@ const CreateModal = ({ open, handleClose }: ModalType) => {
                 />
                 <Typography sx={{ px: 1 }}> ~ </Typography>
                 <DatePicker
+                  defaultValue={dayjs(new Date())}
                   format="YYYY-MM-DD"
                   label="종료일"
                   value={endAt}

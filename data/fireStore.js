@@ -75,7 +75,7 @@ export const createTodos = async ({ title, content, startAt, endAt }) => {
     title,
     content,
     is_done: false,
-    start_at: Timestamp.fromDate(dayjs(startAt).startOf("day").toDate()), // 00:00:00으로 설정
+    start_at: Timestamp.fromDate(dayjs(startAt).startOf("day").toDate()),
     end_at: Timestamp.fromDate(dayjs(endAt).endOf("day").toDate()),
   };
   await setDoc(newTodoRef, todoData);
@@ -107,8 +107,8 @@ export const updateTodo = async ({
     title,
     content,
     is_done: isDone,
-    start_at: dayjs(startAt).format("YYYY-MM-DD"),
-    end_at: dayjs(endAt).format("YYYY-MM-DD"),
+    start_at: Timestamp.fromDate(dayjs(startAt).startOf("day").toDate()),
+    end_at: Timestamp.fromDate(dayjs(endAt).endOf("day").toDate()),
   };
   await updateDoc(newTodoRef, todoData);
   return todoData;
