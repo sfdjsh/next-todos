@@ -1,6 +1,7 @@
 import { fetchTodoApi } from "@/lid/todoApi";
 import TodoList from "@/components/TodoList";
 import PageNation from "@/components/PageNation";
+import Loading from "@/components/Loading";
 
 const TodoPage = async ({
   searchParams,
