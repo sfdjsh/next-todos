@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Box, Button } from "@mui/material";
-import TodoModal from "./CreateModal";
+import CreateTodoModal from "./CreateTodoModal";
 
-const CreateButton = () => {
+const CreateTodoButton = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,9 +19,9 @@ const CreateButton = () => {
           등록
         </Button>
       </Box>
-      <TodoModal open={open} handleClose={handleClose} />
+      <CreateTodoModal open={open} handleClose={handleClose} />
     </>
   );
 };
 
-export default CreateButton;
+export default CreateTodoButton;

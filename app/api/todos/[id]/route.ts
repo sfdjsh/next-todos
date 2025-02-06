@@ -24,13 +24,6 @@ export async function GET(
   return Response.json(response);
 }
 
-// export async function GET(
-//   request: Request,
-//   { params }: { params: { page: number } }
-// ) {
-//   return ;
-// }
-
 // 할 일 삭제
 export async function DELETE(
   request: Request,
@@ -66,7 +59,6 @@ export async function PUT(
       message: "할 일 수정 성공",
       data: updateData,
     };
-
     return Response.json(response);
   } else {
     const updateData = await updateIsDoneTodo({ id, isDone });
@@ -74,7 +66,6 @@ export async function PUT(
       message: "할 일 완료 여부 수정 성공",
       data: updateData,
     };
-
     return Response.json(response);
   }
 }

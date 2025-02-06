@@ -7,25 +7,16 @@ import {
   TableRow,
   Paper,
   Typography,
-  Box,
+  Tooltip,
 } from "@mui/material";
 import { TodoDataType } from "@/models/types";
-import { fetchTodoApi } from "@/lid/todoApi";
-import UpdateButton from "./UpdateButton";
 import IsDoneButton from "./IsDoneButton";
-import SearchInput from "./SearchInput";
+import UpdateButton from "./UpdateButton";
 
-const TodoList = ({
-  todos,
-}: // onUpdateTodo,
-{
-  todos: TodoDataType[];
-  // onUpdateTodo: (id: string, updateIsDone: boolean) => void;
-}) => {
-  console.log(todos);
+const TodoList = ({ todos }: { todos: TodoDataType[] }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 450 }} aria-label="customized table">
+      <Table sx={{ minWidth: 450 }}>
         <TableHead>
           <TableRow>
             <TableCell
@@ -77,19 +68,22 @@ const TodoList = ({
             <>
               {todos.map((data) => (
                 <TableRow key={data.id}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    sx={{
-                      fontWeight: "bold",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      maxWidth: "150px",
-                    }}
-                  >
-                    {data.title}
-                  </TableCell>
+                  <Tooltip title={data.title} arrow>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      sx={{
+                        fontWeight: "bold",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "150px",
+                        cursor: "default",
+                      }}
+                    >
+                      {data.title}
+                    </TableCell>
+                  </Tooltip>
                   <TableCell align="center">
                     <IsDoneButton
                       id={data.id}
@@ -101,49 +95,30 @@ const TodoList = ({
                     <Typography
                       sx={{
                         display: { xs: "block", md: "inline" },
-                        textAlign: {
-                          xs: "center",
-                        },
-                        fontSize: {
-                          xs: "0.7rem",
-                          md: "1rem",
-                        },
+                        textAlign: { xs: "center" },
+                        fontSize: { xs: "0.7rem", md: "1rem" },
                       }}
                     >
                       {`${data.startAt}`}
                     </Typography>
                     <Typography
                       sx={{
-                        display: {
-                          xs: "block",
-                          md: "inline",
-                        },
-                        textAlign: {
-                          xs: "center",
-                        },
-                        fontSize: {
-                          xs: "0.7rem",
-                          md: "1rem",
-                        },
+                        display: { xs: "block", md: "inline" },
+                        textAlign: { xs: "center" },
+                        fontSize: { xs: "0.7rem", md: "1rem" },
                       }}
                     >
                       {" ~ "}
                     </Typography>
                     <Typography
                       sx={{
-                        display: {
-                          xs: "block",
-                          md: "inline",
-                        },
-                        textAlign: {
-                          xs: "center",
-                        },
-                        fontSize: {
-                          xs: "0.7rem",
-                          md: "1rem",
-                        },
+                        display: { xs: "block", md: "inline" },
+                        textAlign: { xs: "center" },
+                        fontSize: { xs: "0.7rem", md: "1rem" },
                       }}
-                    >{`${data.startAt}`}</Typography>
+                    >
+                      {`${data.endAt}`}
+                    </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <UpdateButton id={data.id} />
@@ -152,15 +127,13 @@ const TodoList = ({
               ))}
             </>
           ) : (
-            <>
-              <TableRow>
-                <TableCell colSpan={4} align="center" sx={{ height: "500px" }}>
-                  <Typography variant="h6" color="textSecondary">
-                    할 일을 등록해주세요.
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            </>
+            <TableRow>
+              <TableCell colSpan={4} align="center" sx={{ height: "500px" }}>
+                <Typography variant="h6" color="textSecondary">
+                  할 일을 등록해주세요.
+                </Typography>
+              </TableCell>
+            </TableRow>
           )}
         </TableBody>
       </Table>

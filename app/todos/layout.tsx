@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
-import CreateButton from "@/components/CreateButton";
-import SearchInput from "@/components/SearchInput";
-import PageNation from "@/components/PageNation";
+import CreateButton from "@/components/CreateTodoButton";
+import SearchTodoInput from "@/components/SearchTodoInput";
 
 const TodosLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,7 +9,7 @@ const TodosLayout = ({ children }: { children: React.ReactNode }) => {
         스코필의 Todo 리스트
       </Typography>
       <CreateButton />
-      <SearchInput />
+      <SearchTodoInput />
       {children}
     </>
   );

@@ -2,19 +2,19 @@
 import { useState } from "react";
 import { Button } from "@mui/material";
 import UpdateModal from "./UpdateModal";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const UpdateButton = ({ id }: { id: any }) => {
+const UpdateButton = ({ id }: { id: string }) => {
   const [open, setOpen] = useState(false);
-  const [modalId, setModalId] = useState<string | null>(null);
+  const [todoId, setTodoId] = useState<string | null>(null);
 
   const handleOpen = (id: string) => {
-    setModalId(id); 
-    setOpen(true);  
+    setTodoId(id);
+    setOpen(true);
   };
 
   const handleClose = () => {
-    setModalId(null);
+    setTodoId(null);
     setOpen(false);
   };
 
@@ -23,8 +23,8 @@ const UpdateButton = ({ id }: { id: any }) => {
       <Button onClick={() => handleOpen(id)}>
         <MoreVertIcon />
       </Button>
-      {modalId && (
-        <UpdateModal open={open} handleClose={handleClose} id={modalId} />
+      {todoId && (
+        <UpdateModal open={open} handleClose={handleClose} id={todoId} />
       )}
     </>
   );

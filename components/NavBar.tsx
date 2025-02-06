@@ -1,19 +1,12 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Link from "next/link";
+import { AppBar, Box, Toolbar, Button } from "@mui/material";
 
 const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1, m: 0, p: 0 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor:'#37474f', boxShadow: 1 }}
+        sx={{ backgroundColor: "#37474f", boxShadow: 1 }}
       >
         <Toolbar>
           <Box display="flex">

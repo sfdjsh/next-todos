@@ -1,10 +1,16 @@
 "use client";
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { deleteTodoApi } from "@/lid/todoApi";
+import { deleteTodoApi } from "@/lib/todoApi";
 import { useRouter } from "next/navigation";
 
-const DeleteButton = ({ id, handleClose }: any) => {
+const DeleteButton = ({
+  id,
+  handleClose,
+}: {
+  id: string;
+  handleClose(): void;
+}) => {
   const router = useRouter();
   const deleteTodo = async (id: string) => {
     const result = await deleteTodoApi(id);

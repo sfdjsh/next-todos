@@ -1,15 +1,14 @@
 "use client";
+import { UpdateModalType, TodoDataType } from "@/models/types";
+import { detailTodoApi, updateTodoApi } from "@/lib/todoApi";
+import DeleteButton from "./DeleteButton";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Box, Modal, TextField, Button, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Textarea } from "@mui/joy";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { createTodoApi, detailTodoApi, updateTodoApi } from "@/lid/todoApi";
-import { ModalType, UpdateModalType } from "@/models/types";
-import { TodoDataType } from "@/models/types";
-import DeleteButton from "./DeleteButton";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import dayjs, { Dayjs } from "dayjs";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -29,7 +28,7 @@ const style = {
   pb: 4,
 };
 
-const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
+const UpdateModal = ({ id, open, handleClose }: UpdateModalType) => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -43,7 +42,7 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
         const result = await detailTodoApi(id);
         setTitle(result.data.title);
         setContent(result.data?.content);
-        setIsDone(result.data?.isDone);
+        setIsDone(result.data.isDone);
         setStartAt(dayjs(result.data.startAt));
         setEndAt(dayjs(result.data.endAt));
       };
@@ -51,21 +50,24 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
     }
   }, []);
 
-  const updateData = async ({ id, title, content, isDone, startAt, endAt }: TodoDataType) => {
-    console.log(startAt, endAt)
+  const updateData = async ({
+    id,
+    title,
+    content,
+    isDone,
+    startAt,
+    endAt,
+  }: TodoDataType) => {
     const result = await updateTodoApi({
       id,
       title,
       content,
       isDone,
       startAt,
-      endAt
+      endAt,
     });
 
-    if (result) {
-      alert('할 일이 정상적으로 수정되었습니다.')
-      router.refresh();
-    }
+    result && alert("할 일이 정상적으로 수정되었습니다."), router.refresh();
   };
 
   return (
@@ -81,15 +83,18 @@ const UpdateModal = ({ open, handleClose, id }: UpdateModalType) => {
             <Button
               sx={{ mr: 1 }}
               variant="contained"
-              onClick={() => updateData({ id, title, content, isDone, startAt, endAt })}
+              onClick={() =>
+                updateData({ id, title, content, isDone, startAt, endAt })
+              }
             >
               <ModeEditIcon /> 수정
             </Button>
             <DeleteButton id={id} handleClose={handleClose} />
-            <Button 
-            variant="contained" 
-            sx={{bgcolor:'black'}}
-            onClick={handleClose}>
+            <Button
+              variant="contained"
+              sx={{ bgcolor: "black" }}
+              onClick={handleClose}
+            >
               <CloseIcon /> 닫기
             </Button>
           </Box>

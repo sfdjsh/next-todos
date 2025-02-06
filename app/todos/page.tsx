@@ -1,13 +1,9 @@
-import { fetchTodoApi } from "@/lid/todoApi";
+import { fetchTodoApi } from "@/lib/todoApi";
 import TodoList from "@/components/TodoList";
 import PageNation from "@/components/PageNation";
-import Loading from "@/components/Loading";
 
-const TodoPage = async ({
-  searchParams,
-}: {
-  searchParams: { page: number };
-}) => {
+const TodoPage = async ({searchParams}: {searchParams: { page: number }}) => {
+
   const { page } = await searchParams;
   const response = await fetchTodoApi(page);
   const todos = response.data;

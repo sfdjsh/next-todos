@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
       message: '검색 조회 성공',
       data
     }
-
     return Response.json(response)
   }
 }

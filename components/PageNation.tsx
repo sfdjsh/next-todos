@@ -11,7 +11,7 @@ const PageNation = ({
 }) => {
   const router = useRouter();
 
-  const handlePageChange = (
+  const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
@@ -25,7 +25,7 @@ const PageNation = ({
         color="primary"
         size="large"
         page={currentPage}
-        onChange={handlePageChange}
+        onChange={handleChangePage}
       />
     </Box>
   );

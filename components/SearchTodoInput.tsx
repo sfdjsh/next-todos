@@ -10,31 +10,22 @@ import {
   TextField,
   InputAdornment,
   IconButton,
-  Button,
-  Typography,
-  Paper,
-  Grid
+  Grid,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { fetchSearchTodoApi, fetchTodoApi } from "@/lid/todoApi";
 import { useRouter } from "next/navigation";
-import { TodoDataType, SearchType } from "@/models/types";
 
-type SetTodo = {
-  setTodos: React.Dispatch<React.SetStateAction<TodoDataType[]>>;
-};
-
-const SearchInput = () => {
+const SearchTodoInput = () => {
   const router = useRouter();
 
   const [field, setField] = useState("");
   const [searchInput, setSearchInput] = useState("");
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const changeField = (event: SelectChangeEvent<string>) => {
     setField(event.target.value);
   };
 
-  const searchPush = () => {
+  const searchedRoutePush = () => {
     router.push(`/todos/search?field=${field}&input=${searchInput}`);
   };
 
@@ -45,11 +36,9 @@ const SearchInput = () => {
           <FormControl fullWidth>
             <InputLabel>종류</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
               value={field}
               label="field"
-              onChange={(e) => handleChange(e)}
+              onChange={(e) => changeField(e)}
             >
               <MenuItem value="title">제목</MenuItem>
             </Select>
@@ -65,7 +54,7 @@ const SearchInput = () => {
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => {
-                        if (field && searchInput) searchPush();
+                        if (field && searchInput) searchedRoutePush();
                         else alert("검색 종류와 검색어를 정확히 입력해주세요.");
                       }}
                     >
@@ -86,4 +75,4 @@ const SearchInput = () => {
   );
 };
 
-export default SearchInput;
+export default SearchTodoInput;

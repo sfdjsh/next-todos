@@ -1,20 +1,20 @@
-import { HandleTodoType } from "@/models/types";
-import { UpdateIsDoneType } from "@/components/IsDoneButton";
-import { TodoDataType } from "@/models/types";
-import { Timestamp } from "firebase/firestore";
+import { CreateTodoType, TodoDataType, UpdateIsDoneType } from "@/models/types";
+import { notFound } from "next/navigation";
+import { SearchTodoType } from "@/models/types";
 
+// 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
-  if (currentPage) {
-    const response = await fetch(
-      `http://localhost:3000/api/todos?page=${currentPage}`,
-      {
-        cache: "no-store",
-      }
-    );
-    return response.json();
-  }
+  !currentPage && notFound();
+  const response = await fetch(
+    `http://localhost:3000/api/todos?page=${currentPage ? currentPage : 1}`,
+    {
+      cache: "no-store",
+    }
+  );
+  return response.json();
 };
 
+// 할일 상세보기 API
 export const detailTodoApi = async (id: string) => {
   const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
     cache: "no-store",
@@ -22,14 +22,13 @@ export const detailTodoApi = async (id: string) => {
   return response.json();
 };
 
+// 할일 생성 API
 export const createTodoApi = async ({
   title,
   content,
   startAt,
   endAt,
-}: any) => {
-  console.log("todoApi.ts");
-  console.log("startAt", startAt instanceof Timestamp);
+}: CreateTodoType) => {
   const response = await fetch("http://localhost:3000/api/todos", {
     method: "POST",
     body: JSON.stringify({
@@ -44,14 +43,16 @@ export const createTodoApi = async ({
   return response.json();
 };
 
+// 할일 삭제 API
 export const deleteTodoApi = async (id: string) => {
-  console.log(id);
   const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
     method: "DELETE",
+    cache: "no-store",
   });
   return response.ok;
 };
 
+// 완료 여부 수정 API
 export const updateIsDoneApi = async ({
   id,
   updateIsDone,
@@ -62,14 +63,12 @@ export const updateIsDoneApi = async ({
       id,
       isDone: updateIsDone,
     }),
-    // cache: "no-store",
+    cache: "no-store",
   });
-
-  console.log(response);
-
   return response.ok;
 };
 
+// 할 일 수정 API
 export const updateTodoApi = async ({
   id,
   title,
@@ -92,9 +91,13 @@ export const updateTodoApi = async ({
   return response.ok;
 };
 
-export const fetchSearchTodoApi = async ({ field, searchInput }: any) => {
+// 할 일 검색 API
+export const fetchSearchTodoApi = async ({
+  field,
+  searchInput,
+}: SearchTodoType) => {
   const response = await fetch(
-    `http://localhost:3000/api/search?field=${field}&input=${searchInput}`,
+    `http://localhost:3000/api/todos/search?field=${field}&input=${searchInput}`,
     {
       cache: "no-store",
     }
@@ -102,9 +105,13 @@ export const fetchSearchTodoApi = async ({ field, searchInput }: any) => {
   return response.json();
 };
 
-export const fetchPeriodTodoApi = async ({date}: any) => {
-  const response = await fetch(`http://localhost:3000/api/calendar?date=${date}`, {
-    cache: "no-store",
-  });
+// 오늘 날짜 할 일 API
+export const fetchTodayTodoApi = async (date: string) => {
+  const response = await fetch(
+    `http://localhost:3000/api/calendar?date=${date}`,
+    {
+      cache: "no-store",
+    }
+  );
   return response.json();
 };

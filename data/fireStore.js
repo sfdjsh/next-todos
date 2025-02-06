@@ -30,6 +30,7 @@ const db = getFirestore(app);
 // 전체 할 일 조회
 export const fetchTodos = async () => {
   let todoList = [];
+  
   const querySnapshot = await getDocs(collection(db, "next-todos"));
   querySnapshot.forEach((doc) => {
     const todoData = {
@@ -40,7 +41,6 @@ export const fetchTodos = async () => {
       startAt: dayjs(doc.data().start_at.toDate()).format("YYYY-MM-DD"),
       endAt: dayjs(doc.data().end_at.toDate()).format("YYYY-MM-DD"),
     };
-
     todoList.push(todoData);
   });
 
@@ -68,7 +68,7 @@ export const fetchSingleTodo = async (id) => {
 };
 
 // 할 일 추가
-export const createTodos = async ({ title, content, startAt, endAt }) => {
+export const createTodo = async ({ title, content, startAt, endAt }) => {
   const newTodoRef = doc(collection(db, "next-todos"));
   const todoData = {
     id: newTodoRef.id,
@@ -130,7 +130,6 @@ export const updateIsDoneTodo = async ({ id, isDone }) => {
 // 검색을 통한 할 일 조회
 export const searchTodo = async ({ field, input }) => {
   const todoList = [];
-
   const todoRef = collection(db, "next-todos");
   const q = query(
     todoRef,
@@ -147,28 +146,23 @@ export const searchTodo = async ({ field, input }) => {
       startAt: dayjs(doc.data().start_at).format("YYYY-MM-DD"),
       endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
     };
-
     todoList.push(todoData);
   });
 
   return todoList;
 };
 
-// 검색을 통한 할 일 조회
-export const includedPeriodTodo = async ({date}) => {
+// 오늘 날짜 할 일 조회
+export const includedTodayTodo = async ({date}) => {
   const todoList = [];
-  
-  console.log(date)
 
   const period = Timestamp.fromDate(dayjs(date).startOf("day").toDate());
-
   const todoRef = collection(db, "next-todos");
   const q = query(
     todoRef,
     where("start_at", "<=", period),
     where("end_at", ">=", period)
   );
-
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const todoData = {

@@ -1,40 +1,47 @@
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 export type TodoDataType = {
   id: string;
   title: string;
   content?: string;
   isDone: boolean;
-  startAt?: Dayjs | null;
-  endAt?: Dayjs | null;
+  startAt: Dayjs | null;
+  endAt: Dayjs | null;
 };
 
-export type TestDataType = {
+export type CreateTodoType = {
+  title: string;
+  content: string;
+  startAt: Dayjs | null;
+  endAt: Dayjs | null;
+};
+
+export type UpdateIsDoneType = {
+  id: string;
+  updateIsDone: boolean;
+};
+
+export type CalendarTodoType = {
   id: string;
   title: string;
   content?: string;
   isDone: boolean;
-  startAt?: string;
-  endAt?: string;
+  startAt: string;
+  endAt: string;
 };
 
-export type HandleTodoType = {
-  title: string;
-  content: string;
-};
-
-export type ModalType = {
+export type CreateModalType = {
   open: boolean;
   handleClose(): void;
 };
 
 export type UpdateModalType = {
+  id: string;
   open: boolean;
   handleClose(): void;
-  id: string;
 };
 
-export type SearchType = {
+export type SearchTodoType = {
   field: string;
   searchInput: string;
 };
