@@ -11,6 +11,7 @@ import {
   query,
   where,
   Timestamp,
+  orderBy
 } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -31,7 +32,12 @@ const db = getFirestore(app);
 export const fetchTodos = async () => {
   let todoList = [];
   
-  const querySnapshot = await getDocs(collection(db, "next-todos"));
+  const todoRef = collection(db, "next-todos")
+  const q = query(
+    todoRef,
+    orderBy("start_at")
+  );
+  const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const todoData = {
       id: doc.data()?.id,
@@ -129,27 +135,32 @@ export const updateIsDoneTodo = async ({ id, isDone }) => {
 
 // 검색을 통한 할 일 조회
 export const searchTodo = async ({ field, input }) => {
-  const todoList = [];
+  let todoList = [];
   const todoRef = collection(db, "next-todos");
-  const q = query(
-    todoRef,
-    where(field, ">=", input),
-    where(field, "<=", input + "\uf8ff")
-  );
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    const todoData = {
-      id: doc.data().id,
-      title: doc.data().title,
-      content: doc.data().content,
-      isDone: doc.data().is_done,
-      startAt: dayjs(doc.data().start_at).format("YYYY-MM-DD"),
-      endAt: dayjs(doc.data().end_at).format("YYYY-MM-DD"),
-    };
-    todoList.push(todoData);
-  });
-
-  return todoList;
+  try {
+    const q = query(
+      todoRef,
+      where(field, ">=", input),
+      where(field, "<=", input + "\uf8ff"),
+      orderBy("start_at"),
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const todoData = {
+        id: doc.id,
+        title: doc.data().title,
+        content: doc.data().content,
+        isDone: doc.data().is_done,
+        startAt: dayjs(doc.data().start_at.toDate()).format("YYYY-MM-DD"),
+        endAt: dayjs(doc.data().end_at.toDate()).format("YYYY-MM-DD"),
+      };
+      todoList.push(todoData);
+    });
+  
+    return todoList;
+  } catch (error) {
+    console.log("error message:", error.message)
+  }
 };
 
 // 오늘 날짜 할 일 조회

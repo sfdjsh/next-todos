@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Table,
   TableBody,
@@ -147,7 +147,7 @@ const SearchTodoList = ({
                       {`${data.endAt}`}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <UpdateButton id={data.id} />
                   </TableCell>
                 </TableRow>

@@ -1,6 +1,7 @@
 import { searchTodo } from "@/data/fireStore";
 import { NextRequest } from "next/server";
 
+// 검색 할 일 조회
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const field = searchParams.get('field')

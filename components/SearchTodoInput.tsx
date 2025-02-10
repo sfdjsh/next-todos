@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FormControl,
   InputLabel,
@@ -13,13 +13,19 @@ import {
   Grid,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SearchTodoInput = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [field, setField] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+  const [field, setField] = useState(searchParams.get("field") || "");
+  const [searchInput, setSearchInput] = useState(searchParams.get("input") || "");
+
+  useEffect(() => {
+    setField(searchParams.get("field") || "")
+    setSearchInput(searchParams.get("input") || "")
+  }, [searchParams])
 
   const changeField = (event: SelectChangeEvent<string>) => {
     setField(event.target.value);
