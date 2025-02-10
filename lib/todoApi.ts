@@ -4,7 +4,8 @@ import { SearchTodoType } from "@/models/types";
 
 // 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
-  !currentPage && notFound();
+  if (!currentPage) notFound();
+
   const response = await fetch(
     `http://localhost:3000/api/todos?page=${currentPage ? currentPage : 1}`,
     {

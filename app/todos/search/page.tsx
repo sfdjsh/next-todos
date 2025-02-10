@@ -4,7 +4,7 @@ import SearchTodoList from "@/components/SearchTodoList";
 const SearchedTodos = async ({
   searchParams,
 }: {
-  searchParams: { field: string; input: string };
+  searchParams: Promise<{ field: string; input: string }>;
 }) => {
   const { field } = await searchParams;
   const { input } = await searchParams;

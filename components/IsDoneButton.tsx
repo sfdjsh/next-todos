@@ -14,7 +14,7 @@ const IsDoneButton = ({ id, isDone, type }: IsDoneType) => {
 
   const handleUpdateIsDone = async () => {
     const response = await updateIsDoneApi({ id, updateIsDone: !updateIsDone });
-    response && setUpdateIsDone(!updateIsDone);
+    if (response) setUpdateIsDone(!updateIsDone);
   };
 
   return (

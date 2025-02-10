@@ -67,7 +67,10 @@ const UpdateModal = ({ id, open, handleClose }: UpdateModalType) => {
       endAt,
     });
 
-    result && alert("할 일이 정상적으로 수정되었습니다."), router.refresh();
+    if (result) {
+      alert("할 일이 정상적으로 수정되었습니다.");
+      router.refresh();
+    }
   };
 
   return (

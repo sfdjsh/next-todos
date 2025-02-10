@@ -66,7 +66,7 @@ const Calender = () => {
         <Typography variant="h5" sx={{ p: 2, textAlign: "center" }}>
           일정 내용들
         </Typography>
-        {todayTodo.map((data, index) => (
+        {todayTodo.map((data) => (
           <Box key={data.id}>
             <Card
               variant="outlined"

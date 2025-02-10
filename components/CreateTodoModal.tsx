@@ -38,15 +38,21 @@ const CreateTodoModal = ({ open, handleClose }: CreateModalType) => {
     startAt,
     endAt,
   }: CreateTodoType) => {
-    title.length >= 1
-      ? startAt && endAt && startAt <= endAt
-        ? (await createTodoApi({ title, content, startAt, endAt }),
-          setStartAt(dayjs(today)),
-          setEndAt(dayjs(today)),
-          await router.refresh(),
-          handleClose())
-        : alert("종료일은 시작일과 같거나 더 늦게 설정해야 합니다.")
-      : alert("제목을 입력해주세요.");
+    if (title.length < 1) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+
+    if (!startAt || !endAt || startAt > endAt) {
+      alert("종료일은 시작일과 같거나 더 늦게 설정해야 합니다.");
+      return;
+    }
+
+    await createTodoApi({ title, content, startAt, endAt });
+    setStartAt(dayjs(today));
+    setEndAt(dayjs(today));
+    await router.refresh();
+    handleClose();
   };
 
   return (
