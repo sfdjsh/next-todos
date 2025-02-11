@@ -1,21 +1,16 @@
-import { fetchTodoApi } from "@/lib/todoApi";
-import TodoList from "@/components/TodoList";
-import PageNation from "@/components/PageNation";
+"use client"
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 
-const TodoPage = async ({searchParams}: {searchParams: { page: number }}) => {
+const TodoListWrapper = dynamic(() => import("@/components/TodoListWrapper"), {
+  ssr: false,
+});
 
-  const { page } = await searchParams;
-  const response = await fetchTodoApi(page);
-  const todos = response.data;
-
+const TodoPage = () => {
   return (
-    <>
-      <TodoList todos={todos} />
-      <PageNation
-        totalPages={response.total_pages}
-        currentPage={response.current_pages}
-      />
-    </>
+    <Suspense>
+      <TodoListWrapper />
+    </Suspense>
   );
 };
 

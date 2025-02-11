@@ -4,47 +4,41 @@ import {
   updateTodo,
   updateIsDoneTodo,
 } from "@/data/fireStore";
+import { NextRequest, NextResponse } from "next/server";
 
 // 단일 할 일 조회
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = await params;
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }>}) {
+  const { id } = await context.params;
   const data = await fetchSingleTodo(id);
 
   if (!data) {
-    return new Response("id로 조회한 할 일이 없습니다.");
+    return new NextResponse("id로 조회한 할 일이 없습니다.", { status: 404 });
   }
 
   const response = {
     message: "단일 할일 조회",
     data,
   };
-  return Response.json(response);
+  return NextResponse.json(response);
 }
 
 // 할 일 삭제
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = await params;
-  if (!id) return;
+export async function DELETE(request: NextRequest, context: { params: Promise<{ id: string }>}) {
+  const { id } = await context.params;
+  if (!id) return new NextResponse("id가 필요합니다.", { status: 400 });
   const deletedTodo = await deleteTodo(id);
   if (deletedTodo) {
-    return new Response("할일 삭제 성공");
+    return new NextResponse("할일 삭제 성공");
   } else {
-    return new Response("할일 삭제 실패");
+    return new NextResponse("할일 삭제 실패", { status: 500 });
   }
 }
 
 // 할 일 수정
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest, context: { params: Promise<{ id: string }>}
 ) {
-  const { id } = await params;
+  const { id } = await context.params;
   const { title, content, isDone, startAt, endAt } = await request.json();
   if (title && content) {
     const updateData = await updateTodo({
@@ -59,13 +53,13 @@ export async function PUT(
       message: "할 일 수정 성공",
       data: updateData,
     };
-    return Response.json(response);
+    return NextResponse.json(response);
   } else {
     const updateData = await updateIsDoneTodo({ id, isDone });
     const response = {
       message: "할 일 완료 여부 수정 성공",
       data: updateData,
     };
-    return Response.json(response);
+    return NextResponse.json(response);
   }
 }

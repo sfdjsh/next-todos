@@ -51,7 +51,8 @@ const CreateTodoModal = ({ open, handleClose }: CreateModalType) => {
     await createTodoApi({ title, content, startAt, endAt });
     setStartAt(dayjs(today));
     setEndAt(dayjs(today));
-    await router.refresh();
+    router.refresh();
+    router.push("/");
     handleClose();
   };
 
