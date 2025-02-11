@@ -1,6 +1,7 @@
 import { Typography } from "@mui/material";
 import CreateButton from "@/components/CreateTodoButton";
 import SearchTodoInput from "@/components/SearchTodoInput";
+import { Suspense } from "react";
 
 const TodosLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -9,8 +10,10 @@ const TodosLayout = ({ children }: { children: React.ReactNode }) => {
         스코필의 Todo 리스트
       </Typography>
       <CreateButton />
-      <SearchTodoInput />
-      {children}
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchTodoInput />
+        {children}
+      </Suspense>
     </>
   );
 };

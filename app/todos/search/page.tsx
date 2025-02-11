@@ -1,17 +1,17 @@
-"use client";
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
+import { fetchSearchTodoApi } from "@/lib/todoApi";
+import SearchTodoList from "@/components/SearchTodoList";
 
-const SearchWrapper = dynamic(() => import("@/components/SearchWrapper"), {
-  ssr: false,
-});
+const SearchedTodos = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ field: string; input: string }>;
+}) => {
+  const { field } = await searchParams;
+  const { input } = await searchParams;
+  const response = await fetchSearchTodoApi({ field, searchInput: input });
+  const searchTodos = response.data;
 
-const SearchedTodos = () => {
-  return (
-    <Suspense>
-      <SearchWrapper />
-    </Suspense>
-  );
+  return <SearchTodoList searchTodos={searchTodos} input={input} />;
 };
 
 export default SearchedTodos;
