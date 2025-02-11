@@ -2,7 +2,7 @@ import { CreateTodoType, TodoDataType, UpdateIsDoneType } from "@/models/types";
 import { notFound } from "next/navigation";
 import { SearchTodoType } from "@/models/types";
 
-const baseURL = process.env.BASE_URL
+const baseURL = process.env.NEXT_PUBLIC_API_URL
 
 // 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
