@@ -1,26 +1,23 @@
 "use client";
 import { updateIsDoneApi } from "@/lib/todoApi";
 import { Button } from "@mui/material";
-import { useState } from "react";
-
-export type IsDoneType = {
-  id: string;
-  isDone: boolean;
-  type: string;
-};
+import { useRouter } from "next/navigation";
+import { IsDoneType } from "@/models/types";
 
 const IsDoneButton = ({ id, isDone, type }: IsDoneType) => {
-  const [updateIsDone, setUpdateIsDone] = useState<boolean>(isDone);
+  const router = useRouter();
 
   const handleUpdateIsDone = async () => {
-    const response = await updateIsDoneApi({ id, updateIsDone: !updateIsDone });
-    if (response) setUpdateIsDone(!updateIsDone);
+    const response = await updateIsDoneApi({ id, updateIsDone: !isDone });
+    if (response) {
+      router.refresh();
+    }
   };
 
   return (
     <Button
       variant="contained"
-      color={updateIsDone ? "success" : "warning"}
+      color={isDone ? "success" : "warning"}
       sx={
         type === "calendar"
           ? (theme) => ({
@@ -36,7 +33,7 @@ const IsDoneButton = ({ id, isDone, type }: IsDoneType) => {
       }
       onClick={handleUpdateIsDone}
     >
-      {updateIsDone ? "완료" : "미완료"}
+      {isDone ? "완료" : "미완료"}
     </Button>
   );
 };

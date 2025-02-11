@@ -16,6 +16,12 @@ export type CreateTodoType = {
   endAt: Dayjs | null;
 };
 
+export type IsDoneType = {
+  id: string;
+  isDone: boolean;
+  type: string;
+};
+
 export type UpdateIsDoneType = {
   id: string;
   updateIsDone: boolean;

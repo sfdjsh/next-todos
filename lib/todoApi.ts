@@ -2,7 +2,7 @@ import { CreateTodoType, TodoDataType, UpdateIsDoneType } from "@/models/types";
 import { notFound } from "next/navigation";
 import { SearchTodoType } from "@/models/types";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL
+const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 // 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
@@ -90,6 +90,7 @@ export const updateTodoApi = async ({
       startAt,
       endAt,
     }),
+    cache: "no-store",
   });
   return response.ok;
 };
@@ -110,11 +111,8 @@ export const fetchSearchTodoApi = async ({
 
 // 오늘 날짜 할 일 API
 export const fetchTodayTodoApi = async (date: string) => {
-  const response = await fetch(
-    `${baseURL}/api/calendar?date=${date}`,
-    {
-      cache: "no-store",
-    }
-  );
+  const response = await fetch(`${baseURL}/api/calendar?date=${date}`, {
+    cache: "no-store",
+  });
   return response.json();
 };

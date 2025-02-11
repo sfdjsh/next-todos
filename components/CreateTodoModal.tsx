@@ -52,7 +52,6 @@ const CreateTodoModal = ({ open, handleClose }: CreateModalType) => {
     setStartAt(dayjs(today));
     setEndAt(dayjs(today));
     router.refresh();
-    router.push("/");
     handleClose();
   };
 

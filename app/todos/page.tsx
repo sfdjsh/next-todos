@@ -10,6 +10,7 @@ const TodoPage = async ({
   const { page } = await searchParams;
   const response = await fetchTodoApi(page);
   const todos = response.data;
+  console.log(todos)
 
   return (
     <>
