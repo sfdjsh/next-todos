@@ -2,12 +2,13 @@ import { CreateTodoType, TodoDataType, UpdateIsDoneType } from "@/models/types";
 import { notFound } from "next/navigation";
 import { SearchTodoType } from "@/models/types";
 
+const baseURL = process.env.BASE_URL
 // 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
   if (!currentPage) notFound();
 
   const response = await fetch(
-    `http://localhost:3000/api/todos?page=${currentPage ? currentPage : 1}`,
+    `${baseURL}/api/todos?page=${currentPage ? currentPage : 1}`,
     {
       cache: "no-store",
     }
@@ -17,7 +18,7 @@ export const fetchTodoApi = async (currentPage: number) => {
 
 // 할일 상세보기 API
 export const detailTodoApi = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+  const response = await fetch(`${baseURL}/api/todos/${id}`, {
     cache: "no-store",
   });
   return response.json();
@@ -30,7 +31,7 @@ export const createTodoApi = async ({
   startAt,
   endAt,
 }: CreateTodoType) => {
-  const response = await fetch("http://localhost:3000/api/todos", {
+  const response = await fetch(`${baseURL}/api/todos`, {
     method: "POST",
     body: JSON.stringify({
       title,
@@ -46,7 +47,7 @@ export const createTodoApi = async ({
 
 // 할일 삭제 API
 export const deleteTodoApi = async (id: string) => {
-  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+  const response = await fetch(`${baseURL}/api/todos/${id}`, {
     method: "DELETE",
     cache: "no-store",
   });
@@ -58,7 +59,7 @@ export const updateIsDoneApi = async ({
   id,
   updateIsDone,
 }: UpdateIsDoneType) => {
-  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+  const response = await fetch(`${baseURL}/api/todos/${id}`, {
     method: "PUT",
     body: JSON.stringify({
       id,
@@ -78,7 +79,7 @@ export const updateTodoApi = async ({
   startAt,
   endAt,
 }: TodoDataType) => {
-  const response = await fetch(`http://localhost:3000/api/todos/${id}`, {
+  const response = await fetch(`${baseURL}/api/todos/${id}`, {
     method: "PUT",
     body: JSON.stringify({
       id,
@@ -98,7 +99,7 @@ export const fetchSearchTodoApi = async ({
   searchInput,
 }: SearchTodoType) => {
   const response = await fetch(
-    `http://localhost:3000/api/todos/search?field=${field}&input=${searchInput}`,
+    `${baseURL}/api/todos/search?field=${field}&input=${searchInput}`,
     {
       cache: "no-store",
     }
@@ -109,7 +110,7 @@ export const fetchSearchTodoApi = async ({
 // 오늘 날짜 할 일 API
 export const fetchTodayTodoApi = async (date: string) => {
   const response = await fetch(
-    `http://localhost:3000/api/calendar?date=${date}`,
+    `${baseURL}/api/calendar?date=${date}`,
     {
       cache: "no-store",
     }
