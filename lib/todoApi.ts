@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { SearchTodoType } from "@/models/types";
 
 const baseURL = process.env.BASE_URL
+
 // 할일 조회 API
 export const fetchTodoApi = async (currentPage: number) => {
   if (!currentPage) notFound();
